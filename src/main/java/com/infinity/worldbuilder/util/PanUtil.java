@@ -13,7 +13,7 @@ public class PanUtil {
 	private PanGraph graph;
 
 	public PanUtil() {
-		graph = new PanGraph();
+		graph = new PanGraph(this);
 	}
 
 	public PanGraph getGraph() {

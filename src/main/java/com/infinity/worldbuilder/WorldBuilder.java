@@ -1,9 +1,8 @@
 package com.infinity.worldbuilder;
 
+import com.infinity.worldbuilder.actions.ActivityChain;
 import com.infinity.worldbuilder.model.PanGraph;
 import com.infinity.worldbuilder.util.ModelUtil;
-import com.infinity.worldbuilder.util.PanMarshaller;
-import com.infinity.worldbuilder.util.PanUnmarshaller;
 import com.jme3.app.SimpleApplication;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
@@ -27,22 +26,29 @@ public class WorldBuilder extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp() {
-		PanGraph icosahedron = ModelUtil.generateIcosahedron();
-		PanGraph icosahedron2 = ModelUtil.generateSubdividedIcosahedron(subdivisions, icosahedron);
+		ActivityChain chain = new ActivityChain();
 		
-		PanMarshaller m = new PanMarshaller();
-		PanUnmarshaller u = new PanUnmarshaller();
+		chain.addActivity(new IcosahedronGeneratorActivity());
+		chain.addActivity(new SubdivisionActivity(subdivisions));
+		chain.addActivity(new TessellationActivity(.05));
 		
-		m.marshal(icosahedron2, "tmp.graph");
-		PanGraph tmp = u.unmarshal("tmp.graph");
+		PanGraph graph = chain.execute(null).getGraph();
+		
+//		PanGraph icosahedron = ModelUtil.generateIcosahedron();
+//		PanGraph icosahedron2 = ModelUtil.generateSubdividedIcosahedron(subdivisions, icosahedron);
+		
+//		PanMarshaller m = new PanMarshaller();
+//		PanUnmarshaller u = new PanUnmarshaller();
+//		m.marshal(icosahedron2, "tmp.graph");
+//		PanGraph tmp = u.unmarshal("tmp.graph");
 		
 //		Mesh mesh = ModelUtil.graphToMesth(icosahedron2);
-		Mesh mesh = ModelUtil.graphToMesth(tmp);
+		Mesh mesh = ModelUtil.graphToMesth(graph);
 		
 		Material mat = new Material(assetManager,
 		          "Common/MatDefs/Misc/Unshaded.j3md");  // create a simple material
         mat.setColor("Color", ColorRGBA.Blue);   // set color of material to blue
-        mat.getAdditionalRenderState().setWireframe(true);
+//        mat.getAdditionalRenderState().setWireframe(true);
         
         geom = new Geometry("Box", mesh);  // create cube geometry from the shape
         geom.setMaterial(mat);                   // set the cube's material

@@ -197,6 +197,8 @@ public class ModelUtil {
 		int[] indexes = new int[graph.polygons.size() * 3];
 		int nodeCount = 0;
 		for (Polygon p : graph.polygons) {
+//			for (int i = p.corners.size() - 1; i >= 0; i--) {
+//				Node node = p.corners.get(i);
 			for (Node node : p.corners) {
 				indexes[nodeCount++] = graph.nodes.indexOf(node);
 			}

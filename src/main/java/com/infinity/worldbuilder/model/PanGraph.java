@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.infinity.worldbuilder.util.PanUtil;
+
 /**
  * Holds references to all of the components of the graph
  * 
@@ -31,4 +33,9 @@ public class PanGraph implements Serializable {
 	 */
 	public List<Node> nodes = new ArrayList<Node>();
 
+	public final PanUtil util;
+
+	public PanGraph(PanUtil util) {
+		this.util = util;
+	}
 }
